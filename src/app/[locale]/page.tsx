@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from './context/AuthContext';
-import { createNote, getUserNotes, Note } from './lib/notes';
+import { useAuth } from '../context/AuthContext';
+import { createNote, getUserNotes, Note } from '../lib/notes';
+import { useTranslations } from 'next-intl';
 
 export default function Home() {
   const { user, loading, signInWithGoogle, logout } = useAuth();
@@ -13,7 +14,12 @@ export default function Home() {
 
   useEffect(() => {
     if (user) {
-      getUserNotes(user.uid, setNotes);
+      console.log('User ID:', user.uid); // Verify UID
+      const unsubscribe = getUserNotes(user.uid, (notes) => {
+        console.log('Received notes:', notes);
+        setNotes(notes);
+      });
+      return () => unsubscribe();
     } else {
       setNotes([]);
     }
@@ -32,9 +38,9 @@ export default function Home() {
       console.error(err);
     }
   };
+  const t = useTranslations('testNotes');
 
   if (loading) return <div>Loading...</div>;
-
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center p-4">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
@@ -68,7 +74,7 @@ export default function Home() {
                 type="submit"
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               >
-                Add Note
+                {t('addNote')}
               </button>
             </form>
             <div>
