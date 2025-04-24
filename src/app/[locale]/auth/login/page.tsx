@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useAuth } from "@/app/context/AuthContext";
 import { useRouter } from "next/navigation";
-
+import Link from "next/link";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -75,9 +75,12 @@ export default function Login() {
         </form>
         <p className="mt-4 text-center">
           Don’t have an account?{" "}
-          <a href="/auth/register" className="text-blue-500 hover:underline">
+          <Link
+            href="/auth/register"
+            className="text-blue-500 hover:underline"
+          >
             Register
-          </a>
+          </Link>
         </p>
       </div>
     </div>

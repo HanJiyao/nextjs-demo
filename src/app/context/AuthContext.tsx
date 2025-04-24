@@ -9,10 +9,10 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   User,
-  fetchSignInMethodsForEmail,
   linkWithCredential,
   EmailAuthProvider,
   signInWithPopup,
+  AuthError,
 } from "firebase/auth";
 
 interface AuthContextType {
@@ -127,32 +127,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       );
       console.log("Email registration successful:", userCredential.user.uid);
       setUser(userCredential.user);
-    } catch (error: any) {
-      console.error("Sign-up error:", {
-        code: error.code,
-        message: error.message,
-        details: error,
-      });
-      if (error.code === "auth/email-already-in-use") {
-        console.log("Email already in use, checking sign-in methods");
-        try {
-          console.log("Email linked to Google, initiating Google sign-in");
-          const credential = EmailAuthProvider.credential(email, password);
-          const result = await signInWithPopup(auth, googleProvider);
-          if (result.user) {
-            console.log("Linking email credential to Google account");
-            await linkWithCredential(result.user, credential);
-            console.log("Email credential linked successfully");
-            setUser(result.user);
-          } else {
-            throw new Error("Google sign-in failed, no user returned.");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error("Sign-up error:", {
+          code: (error as AuthError).code,
+          message: error.message,
+          details: error,
+        });
+        if ((error as AuthError).code === "auth/email-already-in-use") {
+          console.log("Email already in use, checking sign-in methods");
+          try {
+            console.log("Email linked to Google, initiating Google sign-in");
+            const credential = EmailAuthProvider.credential(email, password);
+            const result = await signInWithPopup(auth, googleProvider);
+            if (result.user) {
+              console.log("Linking email credential to Google account");
+              await linkWithCredential(result.user, credential);
+              console.log("Email credential linked successfully");
+              setUser(result.user);
+            } else {
+              throw new Error("Google sign-in failed, no user returned.");
+            }
+          } catch (linkError: unknown) {
+            console.error("Error linking account:", linkError);
+            throw linkError;
           }
-        } catch (linkError: unknown) {
-          console.error("Error linking account:", linkError);
-          throw linkError;
+        } else {
+          throw error;
         }
-      } else {
-        throw error;
       }
     }
   };
