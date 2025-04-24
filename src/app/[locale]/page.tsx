@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { createNote, getUserNotes, Note } from '../lib/notes';
+import { useAuth } from '@/app/context/AuthContext';
+import { createNote, getUserNotes, Note } from '@/app/lib/notes';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 
 export default function Home() {
   const { user, loading, signInWithGoogle, logout } = useAuth();
@@ -106,12 +107,26 @@ export default function Home() {
             </div>
           </>
         ) : (
-          <button
-            onClick={signInWithGoogle}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            Sign in with Google
-          </button>
+          <div className="flex flex-col space-y-4">
+            <button
+              onClick={signInWithGoogle}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Sign in with Google
+            </button>
+            <Link
+              href="/auth/login"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-center"
+            >
+              Log in with Email
+            </Link>
+            <Link
+              href="/auth/register"
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-center"
+            >
+              Register with Email
+            </Link>
+          </div>
         )}
       </div>
     </div>
