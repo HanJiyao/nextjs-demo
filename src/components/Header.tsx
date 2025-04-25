@@ -42,7 +42,7 @@ export default function Header({ initialUser }: HeaderProps) {
   return (
     <header>
       <Link href="/" className="logo">
-        mikomiko
+        app hosting test
       </Link>
       {user ? (
         <>
@@ -60,8 +60,8 @@ export default function Header({ initialUser }: HeaderProps) {
 
             <div className="menu">
               <ul>
-                <li>{user.displayName}</li>
-                {/* <li>
+                {/* <li>{user.displayName}</li>
+                <li>
                   <a href="#" onClick={addFakeRestaurantsAndReviews}>
                     Add sample restaurants
                   </a>
