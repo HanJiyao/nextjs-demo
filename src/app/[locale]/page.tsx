@@ -1,17 +1,29 @@
 "use client";
 
-// import { useState, useEffect } from "react";
-// import { createNote, getUserNotes, Note } from "@/lib/notes";
-// import Link from "next/link";
-// import {useTranslations} from 'next-intl';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { onAuthStateChanged } from "@/lib/firebase/auth";
 
-// import { getAuthenticatedAppForUser as getUser} from "@/lib/firebase/serverApp";
-import { useTranslations } from "next-intl";
 export default function Home() {
-  const t = useTranslations('appHostingTest');
+  const router = useRouter();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged((user) => {
+      if (!user) {
+        router.push('/auth');
+      } else {
+        router.push('/community');
+      }
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
   return (
-    <div className="h-[calc(100vh-58px)] flex flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold mb-4">{t('helloWorld')}</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <h1 className="text-6xl font-bold text-center">
+        mikomiko Web UI
+      </h1>
     </div>
   );
 }

@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
-import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
+import { ConfigProvider } from "antd";
+import "@ant-design/v5-patch-for-react-19";
+import ClientProvider from "@/providers/ClientProvider";
 import Header from "@/components/Header";
+import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
 import { User } from "firebase/auth";
-import "@/app/styles.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,17 +38,28 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+
   const { currentUser } = await getAuthenticatedAppForUser();
 
   return (
-    <html lang="en">
+    <html>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NextIntlClientProvider>
-          <Header initialUser={currentUser as User | null} />
-          {children}
-        </NextIntlClientProvider>
+        <Header initialUser={currentUser ? currentUser.toJSON() as User : null} />
+        <ClientProvider>
+          <NextIntlClientProvider>
+            <ConfigProvider
+              theme={{
+                token: {
+                  // Add any theme tokens you need
+                },
+              }}
+            >
+              {children}
+            </ConfigProvider>
+          </NextIntlClientProvider>
+        </ClientProvider>
       </body>
     </html>
   );
