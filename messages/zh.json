@@ -473,7 +473,8 @@
     "fishes per month": "每月鱼币数量",
     "extra": "额外"
   },
-  "testNotes": {
-    "addNote": "添加笔记"
+  "appHostingTest": {
+    "appHostingTest": "App Hosting 测试",
+    "helloWorld": "你好，世界！"
   }
 }

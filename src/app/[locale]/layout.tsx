@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
-import {NextIntlClientProvider, hasLocale} from 'next-intl';
-import {notFound} from 'next/navigation';
-import {routing} from '@/i18n/routing';
+import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { notFound } from "next/navigation";
+import { routing } from "@/i18n/routing";
 import Header from "@/components/Header";
 import { User } from "firebase/auth";
-
+import "@/app/styles.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,26 +26,26 @@ export const metadata: Metadata = {
 
 export default async function LocaleLayout({
   children,
-  params
+  params,
 }: {
   children: React.ReactNode;
-  params: Promise<{locale: string}>;
+  params: Promise<{ locale: string }>;
 }) {
   // Ensure that the incoming `locale` is valid
-  const {locale} = await params;
+  const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
   const { currentUser } = await getAuthenticatedAppForUser();
- 
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header initialUser={currentUser as User | null} />
         <NextIntlClientProvider>
-            {children}
+          <Header initialUser={currentUser as User | null} />
+          {children}
         </NextIntlClientProvider>
       </body>
     </html>

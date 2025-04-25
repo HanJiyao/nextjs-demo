@@ -8,6 +8,7 @@ import {
   onIdTokenChanged,
 } from "@/lib/firebase/auth";
 import { User } from "firebase/auth";
+import {useTranslations} from 'next-intl';
 
 interface HeaderProps {
   initialUser: User | null;
@@ -38,11 +39,12 @@ export default function Header({ initialUser }: HeaderProps) {
     event.preventDefault();
     signInWithGoogle();
   };
+  const t = useTranslations('appHostingTest');
 
   return (
     <header>
       <Link href="/" className="logo">
-        app hosting test
+        {t('appHostingTest')}
       </Link>
       {user ? (
         <>

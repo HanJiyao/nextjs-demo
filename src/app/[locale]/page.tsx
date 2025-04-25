@@ -6,11 +6,12 @@
 // import {useTranslations} from 'next-intl';
 
 // import { getAuthenticatedAppForUser as getUser} from "@/lib/firebase/serverApp";
-
+import { useTranslations } from "next-intl";
 export default function Home() {
+  const t = useTranslations('appHostingTest');
   return (
-    <div>
-      <h1>Hello World</h1>
+    <div className="h-[calc(100vh-58px)] flex flex-col items-center justify-center">
+      <h1 className="text-4xl font-bold mb-4">{t('helloWorld')}</h1>
     </div>
   );
 }
