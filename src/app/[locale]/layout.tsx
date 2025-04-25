@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
-import { AuthProvider } from "@/context/AuthContext";
+import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
 import {NextIntlClientProvider, hasLocale} from 'next-intl';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
+import Header from "@/components/Header";
+import { User } from "firebase/auth";
 
 
 const geistSans = Geist({
@@ -34,16 +36,16 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+  const { currentUser } = await getAuthenticatedAppForUser();
  
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Header initialUser={currentUser as User | null} />
         <NextIntlClientProvider>
-          <AuthProvider>
             {children}
-          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>
