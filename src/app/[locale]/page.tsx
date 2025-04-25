@@ -1,23 +1,25 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useAuth } from '@/app/context/AuthContext';
-import { createNote, getUserNotes, Note } from '@/app/lib/notes';
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { createNote, getUserNotes, Note } from "@/app/lib/notes";
+import Link from "next/link";
+import {useTranslations} from 'next-intl';
 
 export default function Home() {
   const { user, loading, signInWithGoogle, logout } = useAuth();
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [notes, setNotes] = useState<Note[]>([]);
   const [error, setError] = useState<string | null>(null);
 
+  const t = useTranslations('testNotes');
+
   useEffect(() => {
     if (user) {
-      console.log('User ID:', user.uid); // Verify UID
+      console.log("User ID:", user.uid); // Verify UID
       const unsubscribe = getUserNotes(user.uid, (notes) => {
-        console.log('Received notes:', notes);
+        console.log("Received notes:", notes);
         setNotes(notes);
       });
       return () => unsubscribe();
@@ -31,15 +33,15 @@ export default function Home() {
     if (!user) return;
     try {
       await createNote(user.uid, content, file || undefined);
-      setContent('');
+      setContent("");
       setFile(null);
       setError(null);
     } catch (err) {
-      setError('Failed to create note');
+      setError("Failed to create note");
       console.error(err);
     }
   };
-  const t = useTranslations('testNotes');
+  // const t = useTranslations("testNotes");
 
   if (loading) return <div>Loading...</div>;
   return (

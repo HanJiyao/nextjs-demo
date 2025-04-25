@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
-import { AuthProvider } from "../context/AuthContext";
-import { NextIntlClientProvider, hasLocale } from "next-intl";
-import { notFound } from "next/navigation";
-import { routing } from "@/i18n/routing";
+import { AuthProvider } from "@/context/AuthContext";
+import {NextIntlClientProvider, hasLocale} from 'next-intl';
+import {notFound} from 'next/navigation';
+import {routing} from '@/i18n/routing';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,23 +24,26 @@ export const metadata: Metadata = {
 
 export default async function LocaleLayout({
   children,
-  params,
+  params
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
+  params: Promise<{locale: string}>;
 }) {
   // Ensure that the incoming `locale` is valid
-  const { locale } = await params;
+  const {locale} = await params;
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+ 
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider>
-          <AuthProvider>{children}</AuthProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </NextIntlClientProvider>
       </body>
     </html>

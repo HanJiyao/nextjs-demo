@@ -1,30 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/app/context/AuthContext";
+import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
-export default function Register() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const { signUpWithEmail } = useAuth();
+  const { signInWithEmail } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     try {
-      await signUpWithEmail(email, password);
-      router.push("/"); // Only redirect on successful registration
+      await signInWithEmail(email, password);
+      router.push("/"); // Redirect to home after successful login
     } catch (error: unknown) {
+      // Handle the error, with type checks if needed
       if (error instanceof Error) {
         console.error(error.message);
-        setError(error.message || "Failed to register");
+        setError(error.message || "Failed to log in");
       } else {
         console.error("Unknown error:", error);
-        setError("An unknown error occurred during registration");
       }
     }
   };
@@ -32,7 +31,7 @@ export default function Register() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold mb-4">Register</h1>
+        <h1 className="text-2xl font-bold mb-4">Log In</h1>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
@@ -64,7 +63,6 @@ export default function Register() {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-2 border rounded mt-1"
               required
-              minLength={6}
             />
           </div>
           {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -72,13 +70,16 @@ export default function Register() {
             type="submit"
             className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            Register
+            Log In
           </button>
         </form>
         <p className="mt-4 text-center">
-          Already have an account?{" "}
-          <Link href="/auth/login" className="text-blue-500 hover:underline">
-            Log in
+          Don’t have an account?{" "}
+          <Link
+            href="/auth/register"
+            className="text-blue-500 hover:underline"
+          >
+            Register
           </Link>
         </p>
       </div>
