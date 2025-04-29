@@ -1,34 +1,56 @@
-import { signInWithGoogle } from "@/lib/firebase/auth";
+import { login, signInWithGoogle, signUpWithEmail } from "@/lib/firebase/auth";
 import { useMutation } from "@tanstack/react-query";
-import { ApiError } from "@/client/core/ApiError";
-import { AxiosError } from "axios";
 import { useState } from "react";
 
+type loginInput = {
+  email: string;
+  password: string;
+};
+
+type registerInput = {
+  username: string;
+  email: string;
+  password: string;
+};
+
 export const useAuth = () => {
-    const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-    const loginWithGoogleMutation = useMutation({
-        mutationFn: signInWithGoogle,
-        onSuccess: () => {
-          window.location.href = '/community';
-        },
-        onError: (err: ApiError) => {
-          let errDetail = (err.body as { detail?: string | string[] })?.detail;
-    
-          if (err instanceof AxiosError || err instanceof Error) {
-            errDetail = err.message;
-          }
-    
-          if (Array.isArray(errDetail)) {
-            errDetail = "Something went wrong";
-          }
-    
-          setError(errDetail as string);
-        },
-      });
+  const signUpMutation = useMutation({
+    mutationFn: (input: registerInput) =>
+      signUpWithEmail(input.username, input.email, input.password),
+    onSuccess: () => {
+      window.location.href = "/community";
+    },
+    onError: (err) => {
+      setError(err.message);
+    },
+  });
 
-      return {
-        loginWithGoogleMutation,
-        error
-      };
-}
+  const loginMutation = useMutation({
+    mutationFn: (input: loginInput) => login(input.email, input.password),
+    onSuccess: () => {
+      window.location.href = "/community";
+    },
+    onError: (err) => {
+      setError(err.message);
+    },
+  });
+
+  const loginWithGoogleMutation = useMutation({
+    mutationFn: signInWithGoogle,
+    onSuccess: () => {
+      window.location.href = "/community";
+    },
+    onError: (err) => {
+      setError(err.message);
+    },
+  });
+
+  return {
+    loginWithGoogleMutation,
+    signUpMutation,
+    loginMutation,
+    error,
+  };
+};

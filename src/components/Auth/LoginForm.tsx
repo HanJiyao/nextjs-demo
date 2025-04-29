@@ -1,3 +1,5 @@
+"use client";
+
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import GoogleLogo from "@/components/Common/Icons/GoogleLogo";
 import { Form, Input, Button, theme, Alert } from "antd";
@@ -21,11 +23,11 @@ const LoginForm = () => {
 
   const [form] = Form.useForm();
 
- const { loginWithGoogleMutation, error } = useAuth();
+ const { loginMutation, loginWithGoogleMutation, error } = useAuth();
 
-  // const onSubmit = async (values: LoginFormValues) => {
-  //   await mutateAsync(values);
-  // };
+  const onSubmit = async (values: LoginFormValues) => {
+    await loginMutation.mutate(values);
+  };
 
   const schema = z.object({
     email: z.string().email(t("emailInvalid")).nonempty(t("emailRequired")),
@@ -41,7 +43,7 @@ const LoginForm = () => {
     <div style={{ backgroundColor: token.colorBgContainer }}>
         <Form
           form={form}
-          // onFinish={onSubmit}
+          onFinish={onSubmit}
           layout="vertical"
           labelAlign="left"
         >

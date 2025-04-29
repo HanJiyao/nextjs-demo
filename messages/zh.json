@@ -67,7 +67,8 @@
     "somethingWentWrong": "发生了错误。",
     "accountCreated": "账户创建成功。",
     "loginSuccess": "登录成功。",
-    "logoutSuccess": "注销成功。"
+    "logoutSuccess": "注销成功。",
+    "emailLinkRequired": "请使用电子邮件链接登录。"
   },
   "community": {
     "thatsAll": "已经到底了",
