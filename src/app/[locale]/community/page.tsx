@@ -36,7 +36,6 @@ import Image from "next/image";
 // import { useQueryClient } from "@tanstack/react-query";
 // import Image from "next/image";
 import { Typography } from "antd";
-import { message } from "@/utils/message";
 import { useUser } from "@/lib/firebase/getUser";
 
 const { Title } = Typography;
