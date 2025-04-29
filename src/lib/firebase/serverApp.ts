@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { initializeServerApp, initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { firebaseConfig } from "@/lib/firebase/config";
+import { adminAuth } from "@/lib/firebase/admin";
 
 // Returns an authenticated client SDK instance for use in Server Side Rendering
 // and Static Site Generation
@@ -25,4 +26,13 @@ export async function getAuthenticatedAppForUser() {
   await auth.authStateReady();
 
   return { firebaseServerApp, currentUser: auth.currentUser };
+}
+
+export async function createUser(username: string, email: string, password: string) {
+  const user = await adminAuth.createUser({
+    email,
+    password,
+    displayName: username,
+  });
+  return user;
 }

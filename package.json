@@ -23,6 +23,8 @@
     "cookies-next": "^5.1.0",
     "firebase": "^11.6.1",
     "firebase-admin": "^13.3.0",
+    "fs": "^0.0.1-security",
+    "http2": "^3.3.6",
     "lucide-react": "^0.503.0",
     "net": "^1.0.2",
     "next": "15.3.1",

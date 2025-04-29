@@ -6,6 +6,7 @@ import {
   // Divider,
   Card,
   Button,
+  Input,
   // FloatButton,
   // Badge,
   // Popover,
@@ -22,6 +23,7 @@ import {
   RightOutlined,
   // BellOutlined,
   GiftOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
 import CommunityFilter from "@/components/Community/CommunityFilter";
 // import CheckInModal from "@/components/Community/CheckInModal";
@@ -29,16 +31,23 @@ import CommunityFilter from "@/components/Community/CommunityFilter";
 // import { useQuery } from "@tanstack/react-query";
 // import { MangaService } from "@/client";
 import { ThemeContext } from "@/contexts/theme";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import Image from "next/image";
 // import { useQueryClient } from "@tanstack/react-query";
 // import Image from "next/image";
+import { Typography } from "antd";
+import { message } from "@/utils/message";
+import { useUser } from "@/lib/firebase/getUser";
 
-// interface MangaPage {
-//   data: {
-//     id: string;
-//     imageURL: string;
-//     name: string;
-//   }[];
-// }
+const { Title } = Typography;
+
+interface Note {
+  id?: string;
+  userId: string;
+  createdAt: string;
+  content: string;
+  fileUrl?: string;
+}
 
 export default function CommunityPage() {
   const t = useTranslations("community");
@@ -60,7 +69,8 @@ export default function CommunityPage() {
   // const [notificationCount, setNotificationCount] = useState(0);
   const { isDarkMode } = useContext(ThemeContext);
   // const [isOpen, setIsOpen] = useState(false);
-  // const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
+  const [noteContent, setNoteContent] = useState("");
 
   // const { data, fetchNextPage, hasNextPage, isLoading } =
   //   useCommunityMangas({
@@ -92,7 +102,7 @@ export default function CommunityPage() {
   //   queryFn: () => UserService.getCurrentUser(),
   //   enabled: !!user?.uid,
   // });
-  
+
   // const { data: notifications = [] } = useQuery({
   //   queryKey: ["notifications", user?.uid],
   //   queryFn: async () => {
@@ -112,6 +122,8 @@ export default function CommunityPage() {
   // const handleClick = (item) => {
   //   router.push(`/community/mangas/${item.id}`);
   // };
+
+  const user = useUser();
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
@@ -150,7 +162,9 @@ export default function CommunityPage() {
     "Supernatural",
   ];
 
-  const updateQueryParams = (params: Record<string, string | undefined | null>) => {
+  const updateQueryParams = (
+    params: Record<string, string | undefined | null>
+  ) => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
 
     Object.entries(params).forEach(([key, value]) => {
@@ -200,7 +214,9 @@ export default function CommunityPage() {
     timeRange?: string | null;
   }) => {
     const newParams = {
-      categories: updates.categories?.includes("All") ? undefined : updates.categories?.join(","),
+      categories: updates.categories?.includes("All")
+        ? undefined
+        : updates.categories?.join(","),
       sortBy: updates.sortBy || sortBy,
       filterBy: updates.filterBy || filterBy,
       timeRange: updates.timeRange || timeRange,
@@ -269,6 +285,48 @@ export default function CommunityPage() {
   //     queryClient.invalidateQueries({ queryKey: ["notifications", user?.uid] });
   //   },
   // });
+  const { data } = useQuery({
+    queryKey: ["testNotes"],
+    queryFn: async () => {
+      const response = await fetch("/api/testNote");
+      return response.json();
+    },
+  });
+  const [notes, setNotes] = useState<Note[]>([]);
+
+  useEffect(() => {
+    console.log(data);
+    setNotes(data?.notes || []);
+  }, [data]);
+
+  const createNote = useMutation({
+    mutationFn: async (newNote: Note) => {
+      console.log("Create Note", newNote);
+      const response = await fetch("/api/testNote", {
+        method: "POST",
+        body: JSON.stringify({ newNote }),
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      console.log("Note created successfully");
+      queryClient.invalidateQueries({ queryKey: ["testNotes"] });
+    },
+  });
+
+  const deleteNote = useMutation({
+    mutationFn: async (noteId: string) => {
+      const response = await fetch("/api/testNote", {
+        method: "DELETE",
+        body: JSON.stringify({ noteId }),
+      });
+      return response.json();
+    },
+    onSuccess: () => {
+      console.log("Note deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["testNotes"] });
+    },
+  });
 
   return (
     <Flex
@@ -394,13 +452,65 @@ export default function CommunityPage() {
       </div>
 
       <Card
-        bordered
         className={`w-full h-full ${isDarkMode ? "bg-gray-800" : "bg-white"}`}
       >
         <div
           className="image-gallery w-full py-4 h-[calc(100vh-200px)] overflow-y-auto scrollbar-thin"
           id="image-gallery"
         >
+          <Title level={3} className="text-center">
+            User [{user?.displayName}] Test
+          </Title>
+          <div className="flex gap-2 mb-4">
+            <Input.TextArea
+              rows={1}
+              value={noteContent}
+              onChange={(e) => setNoteContent(e.target.value)}
+            />
+            <Button
+              onClick={() =>
+                createNote.mutate({
+                  userId: user?.uid ?? "",
+                  createdAt: new Date().toISOString(),
+                  content: noteContent,
+                })
+              }
+            >
+              Create Note
+            </Button>
+          </div>
+          {notes
+            ?.sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            )
+            .map((note) => (
+              <div
+                key={note.id}
+                className="grid grid-cols-4 gap-4 items-center my-2"
+              >
+                <Button
+                  type="text"
+                  icon={<CloseOutlined />}
+                  onClick={() => note.id && deleteNote.mutate(note.id)}
+                />
+                <p className="text-gray-500">{note.createdAt}</p>
+                <Title level={3} className="!mb-0">
+                  {note.content}
+                </Title>
+                {note.fileUrl && (
+                  <div className="flex justify-center">
+                    <Image
+                      src={note.fileUrl}
+                      alt={note.content}
+                      width={200}
+                      height={200}
+                    />
+                  </div>
+                )}
+              </div>
+            ))}
           {/* Editors Choice Section */}
           {/* {editorsPicks.length > 0 && (
             <div className="mb-8">
