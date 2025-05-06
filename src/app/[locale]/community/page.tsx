@@ -488,6 +488,7 @@ export default function CommunityPage() {
               <div
                 key={note.id}
                 className="grid grid-cols-4 gap-4 items-center my-2"
+                style={{ height: "100px" }}
               >
                 <Button
                   type="text"
@@ -501,10 +502,12 @@ export default function CommunityPage() {
                 {note.fileUrl && (
                   <div className="flex justify-center">
                     <Image
+                      priority
                       src={note.fileUrl}
                       alt={note.content}
-                      width={200}
-                      height={200}
+                      width={0}
+                      height={200} 
+                      style={{ width: 'auto', height:"100px", maxWidth: "100%" }}
                     />
                   </div>
                 )}
