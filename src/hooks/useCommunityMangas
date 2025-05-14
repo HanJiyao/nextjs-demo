@@ -1,0 +1,76 @@
+// import { MangaService } from "@/client";
+// import { useInfiniteQuery } from "@tanstack/react-query";
+// // import { useContext } from "react";
+// // import { AuthContext } from "@/contexts/auth";
+
+// export function useCommunityMangas({
+//   categories,
+//   searchQuery,
+//   sortBy,
+//   filterByFollowed,
+//   timeRange,
+//   pageSize = 10,
+//   filterByEditorsChoice,
+// }) {
+//   // const { user } = useContext(AuthContext);
+
+//   const getTimeRangeDate = () => {
+//     if (!timeRange || timeRange === "all") {
+//       return undefined;
+//     }
+
+//     const now = new Date();
+//     const date = new Date(now);
+
+//     switch (timeRange) {
+//       case "today":
+//         date.setHours(0, 0, 0, 0);
+//         break;
+//       case "week":
+//         date.setDate(date.getDate() - 7);
+//         break;
+//       case "month":
+//         date.setMonth(date.getMonth() - 1);
+//         break;
+//     }
+//     return date.toISOString();
+//   };
+
+//   return useInfiniteQuery({
+//     queryKey: [
+//       "communityMangas",
+//       categories,
+//       searchQuery,
+//       sortBy,
+//       filterByFollowed,
+//       timeRange,
+//     ],
+//     initialPageParam: null,
+//     queryFn: async ({ pageParam = null }) => {
+//       const fromDate = getTimeRangeDate();
+
+//       const response = await MangaService.fetchMappedMangaDocuments({
+//         requestBody: {
+//           categories,
+//           name: searchQuery || undefined,
+//           sortedBy: sortBy,
+//           filterByFollowed,
+//           currentUserID: undefined,
+//           fromDate,
+//           pageSize,
+//           lastDocumentID: pageParam,
+//           nextButton: "next",
+//           fetchAll: false,
+//         },
+//       });
+//       return response;
+//     },
+//     getNextPageParam: (lastPage) => {
+//       // Check if the last page has less items than the page size or if no data returned
+//       if (!lastPage.data || lastPage.data.length < pageSize) {
+//         return undefined; // No more pages to fetch
+//       }
+//       return lastPage.lastDocument; // Continue fetching using the lastDocument
+//     },
+//   });
+// }

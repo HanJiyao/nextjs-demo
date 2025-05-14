@@ -1,0 +1,1050 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Mikomiko Web Dev",
+    "version": "0.1.0"
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "MangaSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "canvasSizeArr": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dailyUpVotes": {
+            "type": "number"
+          },
+          "description": {
+            "type": "string"
+          },
+          "documentURL": {
+            "type": "string"
+          },
+          "editorsChoice": {
+            "type": "boolean",
+            "default": false
+          },
+          "firstCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "imageURL": {
+            "type": "string"
+          },
+          "isPosted": {
+            "type": "boolean"
+          },
+          "lastAccessed": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "numComments": {
+            "type": "number",
+            "default": 0
+          },
+          "numDerived": {
+            "type": "number",
+            "default": 0
+          },
+          "numDownloads": {
+            "type": "number",
+            "default": 0
+          },
+          "numHearts": {
+            "type": "number",
+            "default": 0
+          },
+          "postTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "refTemplateTrackingID": {
+            "type": "string"
+          },
+          "templateTrackingID": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "timeLastUpvote": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "uid": {
+            "type": "string"
+          },
+          "upVotes": {
+            "type": "number",
+            "default": 0
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "SearchResponseSchema": {
+        "type": "object",
+        "properties": {
+          "total": {
+            "type": "number"
+          },
+          "total_pages": {
+            "type": "number"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "urls": {
+                  "type": "object",
+                  "properties": {
+                    "raw": {
+                      "type": "string"
+                    },
+                    "full": {
+                      "type": "string"
+                    },
+                    "regular": {
+                      "type": "string"
+                    },
+                    "small": {
+                      "type": "string"
+                    },
+                    "thumb": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "raw",
+                    "full",
+                    "regular",
+                    "small",
+                    "thumb"
+                  ],
+                  "additionalProperties": false
+                },
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "username": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "portfolio_url": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "username",
+                    "name",
+                    "portfolio_url"
+                  ],
+                  "additionalProperties": false
+                },
+                "description": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "alt_description": {
+                  "type": "string",
+                  "nullable": true
+                }
+              },
+              "required": [
+                "id",
+                "urls",
+                "user",
+                "description",
+                "alt_description"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "total",
+          "total_pages",
+          "results"
+        ],
+        "additionalProperties": false
+      },
+      "removeImagePathSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "forumItem2Schema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "imageDataImage": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastAccessed": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "firstCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isFavorite": {
+            "type": "boolean",
+            "default": false
+          },
+          "description": {
+            "type": "string"
+          },
+          "categories": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "isFolder": {
+            "type": "boolean"
+          },
+          "imageURL": {
+            "type": "string"
+          },
+          "isFolderOpened": {
+            "type": "boolean",
+            "default": false
+          },
+          "isDocumentModified": {
+            "type": "boolean",
+            "default": false
+          },
+          "canvasSizeArr": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "fileDocURLCloud": {
+            "type": "string",
+            "nullable": true
+          },
+          "upVotes": {
+            "type": "integer",
+            "default": 0
+          },
+          "hearts": {
+            "type": "integer",
+            "default": 0
+          },
+          "derives": {
+            "type": "integer",
+            "default": 0
+          },
+          "commentsCount": {
+            "type": "integer",
+            "default": 0
+          },
+          "numDownloads": {
+            "type": "integer",
+            "default": 0
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {},
+              "properties": {}
+            },
+            "default": []
+          },
+          "userID": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "userBio": {
+            "type": "string",
+            "nullable": true
+          },
+          "userprofileimage": {
+            "type": "string",
+            "nullable": true
+          },
+          "isUpvoted": {
+            "type": "boolean",
+            "default": false
+          },
+          "isHearted": {
+            "type": "boolean",
+            "default": false
+          },
+          "isPosted": {
+            "type": "boolean",
+            "default": false
+          },
+          "isPinned": {
+            "type": "boolean",
+            "default": false
+          },
+          "hasTemplateBeenModified": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "templateTrackingID": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "refTemplateTrackingID": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "imageDataImage",
+          "lastAccessed",
+          "firstCreated",
+          "description",
+          "categories",
+          "isFolder",
+          "imageURL",
+          "canvasSizeArr",
+          "fileDocURLCloud",
+          "userID",
+          "userName",
+          "userBio",
+          "userprofileimage",
+          "hasTemplateBeenModified",
+          "templateTrackingID",
+          "refTemplateTrackingID"
+        ],
+        "additionalProperties": false
+      },
+      "forumItemSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "imageDataImage": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastAccessed": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "firstCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isFavorite": {
+            "type": "boolean",
+            "default": false
+          },
+          "description": {
+            "type": "string"
+          },
+          "categories": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "isFolder": {
+            "type": "boolean"
+          },
+          "imageURL": {
+            "type": "string"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/forumItem2Schema"
+            },
+            "default": []
+          },
+          "isFolderOpened": {
+            "type": "boolean",
+            "default": false
+          },
+          "isDocumentModified": {
+            "type": "boolean",
+            "default": false
+          },
+          "canvasSizeArr": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "fileDocURLCloud": {
+            "type": "string",
+            "nullable": true
+          },
+          "upVotes": {
+            "type": "integer",
+            "default": 0
+          },
+          "hearts": {
+            "type": "integer",
+            "default": 0
+          },
+          "derives": {
+            "type": "integer",
+            "default": 0
+          },
+          "commentsCount": {
+            "type": "integer",
+            "default": 0
+          },
+          "numDownloads": {
+            "type": "integer",
+            "default": 0
+          },
+          "userID": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "userBio": {
+            "type": "string",
+            "nullable": true
+          },
+          "userprofileimage": {
+            "type": "string",
+            "nullable": true
+          },
+          "isUpvoted": {
+            "type": "boolean",
+            "default": false
+          },
+          "isHearted": {
+            "type": "boolean",
+            "default": false
+          },
+          "isPosted": {
+            "type": "boolean",
+            "default": false
+          },
+          "isPinned": {
+            "type": "boolean",
+            "default": false
+          },
+          "hasTemplateBeenModified": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "templateTrackingID": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "refTemplateTrackingID": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "imageDataImage",
+          "lastAccessed",
+          "firstCreated",
+          "description",
+          "categories",
+          "isFolder",
+          "imageURL",
+          "canvasSizeArr",
+          "fileDocURLCloud",
+          "userID",
+          "userName",
+          "userBio",
+          "userprofileimage",
+          "hasTemplateBeenModified",
+          "templateTrackingID",
+          "refTemplateTrackingID"
+        ],
+        "additionalProperties": false
+      },
+      "studioItemSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "imageDataImage": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastAccessed": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "firstCreated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isFavorite": {
+            "type": "boolean",
+            "default": false
+          },
+          "description": {
+            "type": "string"
+          },
+          "categories": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "isFolder": {
+            "type": "boolean"
+          },
+          "imageURL": {
+            "type": "string"
+          },
+          "children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/forumItem2Schema"
+            },
+            "default": []
+          },
+          "isFolderOpened": {
+            "type": "boolean",
+            "default": false
+          },
+          "isDocumentModified": {
+            "type": "boolean",
+            "default": false
+          },
+          "canvasSizeArr": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "fileDocURLCloud": {
+            "type": "string",
+            "nullable": true
+          },
+          "upVotes": {
+            "type": "integer",
+            "default": 0
+          },
+          "hearts": {
+            "type": "integer",
+            "default": 0
+          },
+          "derives": {
+            "type": "integer",
+            "default": 0
+          },
+          "commentsCount": {
+            "type": "integer",
+            "default": 0
+          },
+          "numDownloads": {
+            "type": "integer",
+            "default": 0
+          },
+          "userID": {
+            "type": "string",
+            "nullable": true
+          },
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "userBio": {
+            "type": "string",
+            "nullable": true
+          },
+          "userprofileimage": {
+            "type": "string",
+            "nullable": true
+          },
+          "isUpvoted": {
+            "type": "boolean",
+            "default": false
+          },
+          "isHearted": {
+            "type": "boolean",
+            "default": false
+          },
+          "isPosted": {
+            "type": "boolean",
+            "default": false
+          },
+          "isPinned": {
+            "type": "boolean",
+            "default": false
+          },
+          "hasTemplateBeenModified": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "templateTrackingID": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "refTemplateTrackingID": {
+            "type": "string",
+            "nullable": true
+          },
+          "documentURL": {
+            "type": "string"
+          },
+          "postTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numComments": {
+            "type": "integer",
+            "default": 0
+          },
+          "numHearts": {
+            "type": "integer",
+            "default": 0
+          },
+          "trendScore": {
+            "type": "string"
+          },
+          "uid": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "imageDataImage",
+          "lastAccessed",
+          "firstCreated",
+          "description",
+          "categories",
+          "isFolder",
+          "imageURL",
+          "canvasSizeArr",
+          "fileDocURLCloud",
+          "userID",
+          "userName",
+          "userBio",
+          "userprofileimage",
+          "hasTemplateBeenModified",
+          "templateTrackingID",
+          "refTemplateTrackingID",
+          "documentURL",
+          "postTime",
+          "trendScore",
+          "uid"
+        ],
+        "additionalProperties": false
+      },
+      "InpaintImageSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "filePath": {
+            "type": "string"
+          },
+          "sourceMangaId": {
+            "type": "string"
+          },
+          "imageCategory": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileSize": {
+            "type": "number"
+          },
+          "mimeType": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "isAi": {
+            "type": "boolean"
+          },
+          "aiService": {
+            "type": "string"
+          },
+          "seed": {
+            "type": "number"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "fileUrl": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "InpaintImagesSchema": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/InpaintImageSchema"
+        }
+      },
+      "SettingsConfig2Schema": {
+        "type": "object",
+        "properties": {
+          "apiURL": {
+            "type": "string"
+          },
+          "frameMargin": {
+            "type": "number"
+          },
+          "frameBorderColor": {
+            "type": "string"
+          },
+          "theme": {
+            "type": "string"
+          },
+          "imageData": {
+            "type": "string"
+          },
+          "textRotation": {
+            "type": "number"
+          },
+          "textFieldSize": {
+            "type": "number"
+          },
+          "frameBorderThickness": {
+            "type": "number"
+          },
+          "gridEnabled": {
+            "type": "boolean"
+          },
+          "canvasWidth": {
+            "type": "number"
+          },
+          "frameSpacing": {
+            "type": "number"
+          },
+          "textFieldFont": {
+            "type": "string"
+          },
+          "textFieldFillColor": {
+            "type": "string"
+          },
+          "textFieldTextColor": {
+            "type": "string"
+          },
+          "canvasHeight": {
+            "type": "number"
+          },
+          "textFieldBorderThickness": {
+            "type": "number"
+          },
+          "frameFillColor": {
+            "type": "string"
+          },
+          "tailWidth": {
+            "type": "number"
+          },
+          "textFieldBorderColor": {
+            "type": "string"
+          },
+          "fontStyle": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UploadsSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "stageId": {
+            "type": "string"
+          },
+          "filePath": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceMangaId": {
+            "type": "string",
+            "nullable": true
+          },
+          "imageCategory": {
+            "type": "string",
+            "enum": [
+              "characters",
+              "backgrounds",
+              "manga_thumbs",
+              "manga_screenshots"
+            ]
+          },
+          "fileSize": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "minimum": 0
+          },
+          "mimeType": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "width": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "minimum": 0
+          },
+          "height": {
+            "type": "integer",
+            "exclusiveMinimum": true,
+            "minimum": 0
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "filePath",
+          "sourceMangaId",
+          "imageCategory",
+          "fileSize",
+          "mimeType",
+          "uploadedAt",
+          "updatedAt",
+          "isActive",
+          "width",
+          "height"
+        ],
+        "additionalProperties": false
+      },
+      "UploadsSchemaOutput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "filePath": {
+            "type": "string"
+          },
+          "sourceMangaId": {
+            "type": "string",
+            "nullable": true
+          },
+          "referenceMangaIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "imageCategory": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "number"
+          },
+          "mimeType": {
+            "type": "string"
+          },
+          "uploadedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "width": {
+            "type": "number"
+          },
+          "height": {
+            "type": "number"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "signedUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "error": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "filePath",
+          "sourceMangaId",
+          "referenceMangaIds",
+          "imageCategory",
+          "fileSize",
+          "mimeType",
+          "uploadedAt",
+          "updatedAt",
+          "isActive",
+          "width",
+          "height",
+          "tags",
+          "signedUrl"
+        ],
+        "additionalProperties": false
+      },
+      "GenAIImageOutputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "filePath": {
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "imageURL": {
+            "type": "string",
+            "format": "uri"
+          },
+          "imageCategory": {
+            "type": "string"
+          },
+          "isAI": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "filePath",
+          "prompt",
+          "imageURL",
+          "imageCategory",
+          "isAI"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "tags": []
+}

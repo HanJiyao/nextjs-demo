@@ -514,5 +514,9 @@
       "confirmDowngrade": "Yes, downgrade plan",
       "cancel": "No, continue subscription"
     }
+  },
+  "appHostingTest": {
+    "appHostingTest": "App Hosting Test",
+    "helloWorld": "Hello World"
   }
 }

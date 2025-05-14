@@ -28,6 +28,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "i18n.js"
-  ],
+, "src/client/core/request/ts"  ],
   "exclude": ["node_modules"]
 }
